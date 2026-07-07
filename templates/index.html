@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Meowdoku Solver</title>
+</head>
+<body>
+
+<h1>Meowdoku Solver</h1>
+
+<form method="POST" enctype="multipart/form-data">
+    <input type="file" name="image" accept="image/*">
+    <button type="submit">上传图片</button>
+</form>
+
+{% if image %}
+    <h2>上传成功</h2>
+    <img src="{{ image }}" style="max-width:500px;">
+{% endif %}
+
+</body>
+</html>
