@@ -1,2 +1,0 @@
-# meowdoku-solver
-meowdoku solver
