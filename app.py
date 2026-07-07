@@ -1,17 +1,21 @@
 from flask import Flask, render_template, request
 import os
 
+from detector import load_image
+from solver import MeowdokuSolver
+
 app = Flask(__name__)
 
 UPLOAD_FOLDER = "static/uploads"
-app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
-
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     image = None
+    info = None
+    hint = None
 
     if request.method == "POST":
         file = request.files.get("image")
@@ -23,7 +27,18 @@ def index():
 
             image = "/" + save_path.replace("\\", "/")
 
-    return render_template("index.html", image=image)
+            info = load_image(save_path)
+
+            solver = MeowdokuSolver()
+            solver.load_board(info)
+            hint = solver.next_hint()
+
+    return render_template(
+        "index.html",
+        image=image,
+        info=info,
+        hint=hint
+    )
 
 
 if __name__ == "__main__":
